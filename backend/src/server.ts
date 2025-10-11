@@ -2,7 +2,7 @@ import express, { type Request, type Response } from "express";
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import authRoutes from "./routes/auth";
-import { authMiddleware } from "./middleware/authMd";
+import { verifyToken } from "./middleware/authMd";
 const app = express();
 const port = process.env.PORT || 4000;
 const prisma = new PrismaClient(); //initiate prisma
@@ -28,7 +28,7 @@ app.get("/api/health", async (req: Request, res: Response) => {
     res.status(503).json({ status: "error", database: "disconnected" });
   }
 });
-app.get("/api/secret", authMiddleware, async (req, res) => {
+app.get("/api/secret", verifyToken, async (req, res) => {
   res.json({ message: "the protected routes succeed" });
 });
 app.listen(port, () => {
