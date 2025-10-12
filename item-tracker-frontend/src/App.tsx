@@ -1,11 +1,12 @@
-import Dialog from "./components/dialog"
+import Auth from "./components/auth"
+
 
 
 
 const App = () => {
   return (
     <div  className="flex min-h-screen items-center justify-center bg-gray-50">
-      <Dialog/>
+      <Auth/>
     </div>
   )
 }
