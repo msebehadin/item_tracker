@@ -1,23 +1,26 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.tsx";
+import "./index.css";
+
+import "@radix-ui/themes/styles.css";
+import { Theme } from "@radix-ui/themes";
 
 
-import '@radix-ui/themes/styles.css'
+import { Provider } from "react-redux";
+import { store } from "./app/store";
 
-
-import { Theme } from '@radix-ui/themes'
-
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Theme
-      appearance="light"      
-      accentColor="blue"      
-      radius="medium"   
-      scaling="100%"  
-    >
-      <App />
-    </Theme>
-  </StrictMode>,
-)
+    <Provider store={store}>
+      <Theme
+        appearance="light"
+        accentColor="blue"
+        radius="medium"
+        scaling="100%"
+      >
+        <App />
+      </Theme>
+    </Provider>
+  </StrictMode>
+);
