@@ -9,7 +9,7 @@ const prisma = new PrismaClient(); //initiate prisma
 
 
 app.use(express.json());
-app.use("/api/auth", authRoutes);
+app.use("/api", authRoutes);
 async function testDbConnection() {
   try {
     await prisma.$connect();

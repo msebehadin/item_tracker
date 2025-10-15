@@ -1,4 +1,10 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../../api/axios";
+const fetchItems=createAsyncThunk('items/fetchItems', async () => {
+   const response = await api.get('http://localhost:4000/api/items');
+  const data = await response.data();
+  return data; 
+})
 
 interface Item {
   name: string;
@@ -22,21 +28,23 @@ const initialState: ItemState = {
 const itemSlice = createSlice({
   name: "item",
   initialState,
-  reducers: {
-    fetchItemStart: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    fetchItemSuccess: (state, action: PayloadAction<Item[]>) => {
-      state.loading = false;
-      state.items = action.payload;
-    },
-    fetchItemFailure: (state, action: PayloadAction<string>) => {
-      state.loading = false;
-      state.error = action.payload;
-    }
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchItems.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchItems.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+      }
+      )
+      .addCase(fetchItems.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "failed to fetch items";
+      })
   }
-});
+})
+   
 
-export const { fetchItemStart, fetchItemSuccess, fetchItemFailure } = itemSlice.actions;
 export default itemSlice.reducer;

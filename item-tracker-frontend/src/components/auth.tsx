@@ -1,15 +1,29 @@
-// src/LoginPage.tsx
-import React, { useState } from "react";
+// src/pages/LoginPage.tsx
+import React, { useState, useEffect } from "react";
 import * as Label from "@radix-ui/react-label";
+import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
+import { loginUser } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const { token, loading, error } = useAppSelector((state) => state.auth);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Email: ${email}\nPassword: ${password}`);
+    dispatch(loginUser({ email, password }));
   };
+
+  // Redirect to dashboard after successful login
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [token, navigate]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -50,10 +64,13 @@ const LoginPage = () => {
 
           <button
             type="submit"
+            disabled={loading}
             className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </button>
+
+          {error && <p className="text-center text-sm text-red-500 mt-2">{error}</p>}
         </form>
 
         <p className="mt-4 text-center text-sm text-gray-500">
