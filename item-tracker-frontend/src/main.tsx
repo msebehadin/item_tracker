@@ -1,29 +1,36 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
-import "./index.css";
 
-import "@radix-ui/themes/styles.css";
-import { Theme } from "@radix-ui/themes";
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import { useAppSelector } from "./hooks/useRedux";
+import { Home } from "lucide-react";
+import AppLayout from "./components/appLayout";
+import Auth from "./pages/auth";
+import Inventory from "./pages/Inventory";
+import Record from "./pages/Record";
 
-import { Provider } from "react-redux";
-import { store } from "./app/store";
-import { RouterProvider } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
+// eslint-disable-next-line react-refresh/only-export-components
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const token = useAppSelector((state) => state.auth.token);
+  return token ? <>{children}</> : <Navigate to='/login' replace />;
+};
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Theme
-          appearance="light"
-          accentColor="blue"
-          radius="medium"
-          scaling="100%"
-        >
-          <App />
-        </Theme>
-      </BrowserRouter>
-    </Provider>
-  </StrictMode>
-);
+export const router = createBrowserRouter([
+  {
+    path: "/login",
+    element: <Auth />,
+  },
+  {
+    path: "/",
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: "/", element: <Navigate to='/home' replace /> },
+      { path: "/home", element: <Home /> },
+      { path: "/record", element: <Record /> },
+
+      { path: "/settings", element: <Inventory /> },
+    ],
+  },
+]);

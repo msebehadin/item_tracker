@@ -1,15 +1,7 @@
-
-import Sidebar from "./components/sideBar"
-
-
-
+import AppLayout from "./components/appLayout";
 
 const App = () => {
-  return (
-  
-<Sidebar/>
-    
-  )
-}
+  return <AppLayout />;
+};
 
-export default App
+export default App;

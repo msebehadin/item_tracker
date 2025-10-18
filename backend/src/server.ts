@@ -2,6 +2,7 @@ import express, { type Request, type Response } from "express";
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import authRoutes from "./routes/auth";
+import itemRoutes from "./routes/items"
 import { verifyToken } from "./middleware/authMd";
 const app = express();
 const port = process.env.PORT || 4000;
@@ -10,6 +11,7 @@ const prisma = new PrismaClient(); //initiate prisma
 
 app.use(express.json());
 app.use("/api", authRoutes);
+app.use("/api", itemRoutes);
 async function testDbConnection() {
   try {
     await prisma.$connect();
