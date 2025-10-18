@@ -18,7 +18,7 @@ const LoginPage = () => {
     dispatch(loginUser({ email, password }));
   };
 
-  // Redirect to dashboard after successful login
+  
   useEffect(() => {
     if (token) {
       navigate("/dashboard");
@@ -74,7 +74,7 @@ const LoginPage = () => {
         </form>
 
         <p className="mt-4 text-center text-sm text-gray-500">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
             Sign up
           </a>

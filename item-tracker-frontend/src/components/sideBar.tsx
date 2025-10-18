@@ -14,10 +14,10 @@ import {
 } from "lucide-react"; // or any icon library
 
 const menuItems = [
-  { name: "Dashboard", path: "/home", icon: <HomeIcon className='w-5 h-5' /> },
+  { name: "Dashboard", path: "/dashboard", icon: <HomeIcon className='w-5 h-5' /> },
   {
     name: "Inventory Items",
-    path: "/settings",
+    path: "/item",
     icon: <AlignVerticalJustifyEnd className='w-5 h-5' />,
   },
   {
